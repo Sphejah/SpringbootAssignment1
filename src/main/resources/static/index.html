@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Spring Boot App</title>
+</head>
+<body>
+<h1>Department of Computer Science Courses</h1>
+
+<div id="courses">
+    <h2>Foundation</h2>
+    <ul id="foundationCourses"></ul>
+
+    <h2>Undergraduate</h2>
+    <ul id="undergraduateCourses"></ul>
+
+    <h2>Honours</h2>
+    <ul id="honoursCourses"></ul>
+</div>
+
+<script>
+    // Fetching categorized courses from the backend
+    fetch('/courses')
+        .then(response => response.json())
+        .then(courses => {
+            const foundationList = document.getElementById('foundationCourses');
+            const undergraduateList = document.getElementById('undergraduateCourses');
+            const honoursList = document.getElementById('honoursCourses');
+
+            for (const category in courses) {
+                if (courses.hasOwnProperty(category)) {
+                    courses[category].forEach(course => {
+                        const listItem = document.createElement('li');
+                        listItem.textContent = course;
+
+                        // Append to the corresponding list based on the category
+                        if (category === 'Foundation') {
+                            foundationList.appendChild(listItem);
+                        } else if (category === 'Undergraduate') {
+                            undergraduateList.appendChild(listItem);
+                        } else if (category === 'Honours') {
+                            honoursList.appendChild(listItem);
+                        }
+                    });
+                }
+            }
+        })
+        .catch(error => console.error('Error fetching courses:', error));
+</script>
+</body>
+</html>
